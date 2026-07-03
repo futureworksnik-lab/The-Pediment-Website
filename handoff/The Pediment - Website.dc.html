@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&amp;family=Hanken+Grotesk:ital,wght@0,300..700;1,300..700&amp;display=swap">
+<style>
+:root{--ink:#17130E;--ink2:#120F0B;--inkT:#1C1917;--paper:#F3EEE3;--paperR:#FAF6EC;--ox:#5E2029;--oxRed:#8A3541;--gold:#C9A76B;--goldB:#E9D3A6;--stone:#57503F;--ivory:#F1EBDF;--ivMut:rgba(241,235,223,.72)}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--inkT);font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+.nomo *{transition:none!important;animation:none!important}
+.nomo .tpath{stroke-dashoffset:0!important}
+.folio{position:relative;min-height:100vh;padding:150px 84px 120px;box-sizing:border-box;overflow:hidden}
+.bgi{position:absolute;inset:0;background-size:cover;background-position:center;pointer-events:none}
+.flipx{transform:scaleX(-1)}
+.scrim{position:absolute;inset:0;pointer-events:none}
+.scr-cover{background:linear-gradient(90deg,rgba(16,12,8,.82),rgba(16,12,8,.42) 46%,rgba(16,12,8,0) 72%)}
+.scr-premise{background:linear-gradient(180deg,rgba(243,238,227,.42),rgba(243,238,227,.68))}
+.scr-gath{background:linear-gradient(90deg,rgba(246,241,229,.92) 0%,rgba(246,241,229,.6) 44%,rgba(246,241,229,.06) 80%)}
+.scr-oxb{background:linear-gradient(180deg,rgba(24,8,11,.5),rgba(24,8,11,.16) 42%,rgba(24,8,11,.55))}
+.scr-pill{background:linear-gradient(90deg,rgba(14,10,7,.78),rgba(14,10,7,.28) 56%,rgba(14,10,7,.04))}
+.scr-eve{background:linear-gradient(90deg,rgba(246,241,229,.9),rgba(246,241,229,.44) 56%,rgba(246,241,229,.12))}
+.scr-adm{background:linear-gradient(180deg,rgba(243,238,227,.78),rgba(243,238,227,.55))}
+.scr-band{background:linear-gradient(90deg,rgba(24,9,12,.76),rgba(24,9,12,.4) 55%,rgba(24,9,12,.12))}
+.scr-apply{background:linear-gradient(270deg,rgba(16,12,8,.74),rgba(16,12,8,.34) 52%,rgba(16,12,8,.04))}
+.grain{position:relative}
+.grain::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.32;mix-blend-mode:soft-light;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/></filter><rect width="220" height="220" filter="url(%23n)" opacity="0.55"/></svg>')}
+.nograin .grain::after{display:none}
+.paper{color:var(--inkT)}
+.inkf{color:var(--ivory)}
+.oxf{color:var(--ivory)}
+.serif{font-family:'Fraunces',serif;font-weight:400}
+.it{font-style:italic}
+.disp{font-family:'Fraunces',serif;font-variation-settings:'opsz' 144;font-weight:335;letter-spacing:.015em;line-height:.95}
+.st{font-family:'Fraunces',serif;font-variation-settings:'opsz' 144;font-weight:365;font-size:clamp(54px,5vw,78px);line-height:1.06;letter-spacing:-.008em;margin:0}
+.lead{font-size:23px;line-height:1.62;font-weight:400}
+.bd{font-size:20px;line-height:1.72}
+.kick{font-family:'Fraunces',serif;font-style:italic;font-weight:430;font-size:21px;color:var(--ox)}
+.inkf .kick,.oxf .kick{color:var(--goldB)}
+.lab2{font:600 12.5px/1.5 'Hanken Grotesk',sans-serif;letter-spacing:.3em;text-transform:uppercase}
+.oxc{color:var(--ox)}.goldc{color:var(--goldB)}.stonec{color:var(--stone)}.ivm{color:var(--ivMut)}
+.eb{position:relative;z-index:2;display:flex;align-items:baseline;justify-content:space-between}
+.paper .eb .lab2{color:var(--stone)}.inkf .eb .lab2,.oxf .eb .lab2{color:var(--ivMut)}
+.foot{position:absolute;left:84px;right:84px;bottom:40px;display:flex;justify-content:space-between;align-items:baseline;pointer-events:none;z-index:2}
+.paper .foot{color:var(--stone)}.inkf .foot,.oxf .foot{color:var(--ivMut)}
+.threadwrap{position:absolute;top:0;left:0;width:100%;pointer-events:none;z-index:2;opacity:.55}
+.threadwrap svg{display:block;width:100%;height:100%}
+.tpath{fill:none;stroke-width:1.5;transition:stroke-dashoffset .3s linear}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:60;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:32px;height:76px;padding:0 56px;box-sizing:border-box;color:var(--inkT);background:rgba(243,238,227,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:background .35s,color .35s}
+.hdr.dk{color:var(--ivory);background:rgba(20,16,12,.5)}
+.hbrand{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;justify-self:start}
+.hmono{font-family:'Fraunces',serif;font-weight:500;font-size:23px;line-height:1}
+.hword{font:700 13.5px 'Hanken Grotesk',sans-serif;letter-spacing:.34em;text-transform:uppercase}
+.hnav{display:flex;align-items:center;justify-self:center;gap:40px}
+.hlink{font:500 15px 'Hanken Grotesk',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.8;transition:opacity .2s;white-space:nowrap}
+.hlink:hover{opacity:1}
+.hcta{display:flex;align-items:center;justify-self:end;gap:30px}
+.hpart{font:500 14px 'Hanken Grotesk',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.7}
+.hpart:hover{opacity:1}
+.hreq{font:600 14px 'Hanken Grotesk',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--oxRed);text-decoration:none;transition:opacity .2s}
+.hdr.dk .hreq{color:var(--goldB)}
+.hreq:hover{opacity:.75}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.rv.on{opacity:1;transform:none}
+.nomo .rv{opacity:1;transform:none}
+.arrow{display:inline-block;transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+.cta:hover .arrow{transform:translateX(5px)}
+.cta{display:inline-flex;align-items:baseline;gap:10px;font:500 19px 'Hanken Grotesk',sans-serif;color:var(--ox);text-decoration:none;border-bottom:1px solid var(--ox);padding-bottom:6px}
+.inkf .cta{color:var(--goldB);border-color:rgba(233,211,166,.55)}
+.ctanote{font:italic 400 17px/1.6 'Hanken Grotesk',sans-serif}
+.covwrap{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;min-height:calc(100vh - 300px);padding-top:30px}
+.covThe{font-size:clamp(56px,6.4vw,106px);color:var(--ivory);text-transform:uppercase;margin:0}
+.covName{font-size:clamp(80px,9.6vw,158px);color:var(--ivory);text-transform:uppercase;margin:0}
+.covSub{font:500 15px/2.15 'Hanken Grotesk',sans-serif;letter-spacing:.26em;text-transform:uppercase;color:rgba(241,235,223,.8);margin:48px 0 0}
+.covarc{position:absolute;left:-300px;top:-140px;width:740px;height:740px;border-radius:50%;border:1px solid rgba(138,53,65,.45);-webkit-mask-image:linear-gradient(135deg,#000 26%,transparent 60%);mask-image:linear-gradient(135deg,#000 26%,transparent 60%);z-index:1}
+.covI{position:absolute;left:38px;top:180px;font-family:'Fraunces',serif;font-style:italic;font-size:26px;color:var(--oxRed);z-index:2}
+.covdots{position:absolute;left:40px;top:58%;display:flex;flex-direction:column;gap:11px;z-index:2}
+.covdots span{width:6px;height:6px;border-radius:50%;background:var(--oxRed)}
+.covdots .lit{background:var(--goldB)}
+.covnum{position:absolute;right:84px;top:118px;color:var(--ivMut);z-index:2}
+.prem{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:14px}
+.premT{color:var(--ox);margin:0}
+.premThe{display:block;font-size:clamp(26px,2.5vw,36px);letter-spacing:.5em;text-indent:.5em;margin-bottom:30px;text-transform:uppercase;font-weight:400}
+.premBig{display:block;font-size:clamp(80px,9.4vw,148px);text-transform:uppercase}
+.premYr{display:block;font-size:clamp(64px,7.4vw,110px);margin-top:14px}
+.premTrip{font-family:'Fraunces',serif;font-style:italic;font-weight:430;font-size:24px;line-height:1.55;color:var(--ox);margin:0 0 34px}
+.premcurves{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.pc{fill:none;stroke:rgba(170,122,74,.48);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:.1 9}
+.annlayer{position:absolute;inset:0;z-index:2;pointer-events:none}
+.ann{position:absolute;display:flex;flex-direction:column;gap:7px;max-width:230px;pointer-events:auto}
+.annR{align-items:flex-end;text-align:right}
+.anndot{width:5px;height:5px;border-radius:50%;background:#A87848;margin-bottom:5px}
+.annk{font:600 11.5px/1 'Hanken Grotesk',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#9A6B3F}
+.annv{font:500 17.5px/1.5 'Hanken Grotesk',sans-serif;color:var(--inkT)}
+.annTrip{right:84px;top:168px;max-width:360px}
+.annA{left:6%;top:27%}
+.annB{left:5%;top:44%}
+.annC{right:5.5%;top:47%}
+.annD{right:8%;top:61%}
+.annE{right:84px;bottom:11%}
+.annF{left:84px;bottom:14%;max-width:430px}
+.gathwrap{position:relative;z-index:2;max-width:820px;margin-top:80px}
+.proofs{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:64px;margin-top:120px;max-width:1150px}
+.pnum{font-family:'Fraunces',serif;font-style:italic;font-size:30px;color:var(--ox)}
+.plabel{font-family:'Fraunces',serif;font-variation-settings:'opsz' 144;font-weight:420;font-size:29px;line-height:1.2;margin:16px 0 14px}
+.ptext{font-size:18.5px;line-height:1.7;color:var(--stone)}
+.oxwrap{position:relative;z-index:2;max-width:1040px;margin:110px auto 0;text-align:center}
+.stats{display:flex;justify-content:center;gap:120px;margin-top:88px}
+.statn{font-family:'Fraunces',serif;font-weight:365;font-size:64px;line-height:1;color:var(--goldB)}
+.statl{font:600 13px/1.7 'Hanken Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(233,211,166,.66);margin-top:14px}
+.pillwrap{position:relative;z-index:2;max-width:820px;margin-top:80px}
+.theme{display:flex;gap:34px;align-items:baseline;margin-top:52px}
+.thnum{font-family:'Fraunces',serif;font-style:italic;font-size:23px;color:var(--gold);width:44px;flex:none}
+.thname{font-family:'Fraunces',serif;font-variation-settings:'opsz' 144;font-weight:390;font-size:clamp(34px,3vw,44px);line-height:1.1;color:var(--ivory);margin:0 0 10px}
+.thdesc{font-size:19px;line-height:1.65;color:rgba(241,235,223,.66);max-width:52ch}
+.evwrap{position:relative}
+.evwm{position:absolute;right:2%;top:3%;font-family:'Fraunces',serif;font-style:italic;font-weight:340;font-size:clamp(240px,32vw,540px);line-height:1;color:var(--ox);opacity:.045;z-index:1;pointer-events:none;user-select:none}
+.evline{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+.evseg{fill:none;stroke:rgba(94,32,41,.42);stroke-width:1.5;stroke-linecap:round;transition:stroke-dashoffset .28s cubic-bezier(.2,.8,.2,1)}
+.nomo .evseg{stroke-dashoffset:0!important}
+.evhead{position:relative;z-index:2;max-width:640px;margin-top:78px}
+.evfield{position:relative;z-index:2;display:grid;grid-template-columns:repeat(12,1fr);column-gap:28px;margin-top:130px}
+.evitem{position:relative}
+.evmk{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
+.evnum{font-family:'Fraunces',serif;font-style:italic;font-weight:430;font-size:46px;color:var(--ox);line-height:1}
+.evreg{color:var(--stone);opacity:.55;font-size:10.5px;letter-spacing:.26em}
+.evdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--paper);border:1.5px solid var(--ox);opacity:.4;vertical-align:middle;transition:opacity .25s ease-out,background-color .25s ease-out}
+.evdot.on{opacity:1;background:var(--ox)}
+.evdotb{display:block;margin-bottom:24px}
+.evtitle{font-family:'Fraunces',serif;font-variation-settings:'opsz' 144;font-weight:390;line-height:1.08;margin:0 0 20px;color:var(--inkT);font-size:clamp(32px,3vw,44px)}
+.evtitle-lg{font-size:clamp(44px,4.8vw,66px);margin-bottom:26px}
+.evbody{max-width:44ch;font-size:19px}
+.evaside{max-width:32ch;font-size:16.5px;color:var(--stone);opacity:.92;border-left:1px solid rgba(94,32,41,.28);padding-left:22px}
+.evlede{display:block;font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:23px;line-height:1.5;margin-bottom:14px;color:var(--inkT)}
+.ev-final{padding-top:52px;border-top:1px solid rgba(94,32,41,.2)}
+.ev-final .evtitle{font-size:clamp(36px,3.4vw,50px)}
+.ev-final .evbody{max-width:64ch}
+.evdisc{opacity:.85}
+.evimg{position:relative;height:340px;background-image:url('assets/travertine-curve.png');background-size:340% auto;background-position:70% 38%;background-repeat:no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent);mask-image:linear-gradient(180deg,#000 80%,transparent)}
+.evrv{opacity:0;transform:translateY(20px);transition:opacity .3s cubic-bezier(.2,.8,.2,1),transform .3s cubic-bezier(.2,.8,.2,1)}
+.evrv.on{opacity:1;transform:none}
+.nomo .evrv{opacity:1!important;transform:none!important}
+.tiers{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:90px}
+.tcard{padding:72px 64px 64px;display:flex;flex-direction:column;min-height:520px;box-sizing:border-box}
+.tvip{background:var(--ink);color:var(--ivory)}
+.tobs{background:var(--paperR)}
+.tkick{font-family:'Fraunces',serif;font-style:italic;font-size:19px;margin-bottom:14px}
+.tvip .tkick{color:var(--goldB)}.tobs .tkick{color:var(--ox)}
+.tname{font-family:'Fraunces',serif;font-variation-settings:'opsz' 144;font-weight:390;font-size:44px;margin:0 0 8px}
+.tby{font:italic 400 18px 'Hanken Grotesk',sans-serif;opacity:.72}
+.tbody{margin:30px 0 0;flex:1}
+.price{font-family:'Fraunces',serif;font-weight:390;font-size:66px;color:var(--ox);line-height:1;margin:28px 0 12px}
+.pricek{font:600 13px 'Hanken Grotesk',sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--stone)}
+.pricen{font-size:17px;line-height:1.6;color:var(--stone)}
+.band{position:relative;background:var(--ink);color:var(--ivory);padding:150px 84px 110px;overflow:hidden;min-height:80vh;display:flex;flex-direction:column;box-sizing:border-box}
+.bwrap{position:relative;z-index:2;margin:auto 0;padding:70px 0 20px;max-width:1020px}
+.bkick{color:rgba(233,211,166,.72)}
+.banchor{font-size:clamp(52px,5.2vw,86px);color:var(--ivory);text-transform:uppercase;margin:38px 0 0}
+.bital{font-family:'Fraunces',serif;font-style:italic;font-weight:410;font-size:clamp(25px,2.3vw,34px);color:var(--goldB);margin:30px 0 0}
+.brow{display:flex;justify-content:space-between;align-items:baseline;gap:44px;margin-top:100px;flex-wrap:wrap}
+.bopen{font:600 14.5px 'Hanken Grotesk',sans-serif;letter-spacing:.26em;text-transform:uppercase;color:var(--ivory)}
+.bfill{font-family:'Fraunces',serif;font-style:italic;font-size:25px;color:rgba(241,235,223,.78)}
+.qwrap{position:relative;z-index:2;max-width:1060px;margin-top:90px}
+.qpart{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 16px;font:600 12.5px/1.5 'Hanken Grotesk',sans-serif;letter-spacing:.3em;text-transform:uppercase;color:var(--stone)}
+.qpart:not(:first-child){margin-top:56px}
+.qprange{opacity:.55;letter-spacing:.2em}
+.qphr{border:0;border-top:1px solid rgba(94,32,41,.3);margin:16px 0 0}
+.qcross{width:32px;height:14px;overflow:visible;flex:none}
+.qcross path{fill:none;stroke:var(--ox);stroke-width:1.3;stroke-linecap:round;opacity:.55}
+.qa{margin:0 0 8px}
+.qs{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:36px;padding:16px 0;min-height:44px;box-sizing:border-box}
+.qs::-webkit-details-marker{display:none}
+.qnum{font-family:'Fraunces',serif;font-style:italic;font-size:20px;color:var(--ox);width:48px;flex:none}
+.qt{font-family:'Fraunces',serif;font-variation-settings:'opsz' 144;font-weight:400;font-size:29px;line-height:1.3;margin:0;flex:1}
+.qs::after{content:'+';font-family:'Fraunces',serif;font-size:32px;font-weight:300;color:var(--ox);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.qa[open] .qs::after{content:'−'}
+.qb{padding:0 84px 30px;max-width:800px;font-size:19.5px;line-height:1.7;color:var(--stone)}
+.applyg{position:relative;z-index:2;display:grid;grid-template-columns:.85fr 1.15fr;gap:110px;margin-top:80px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:42px 46px;margin-top:48px}
+.fld{display:flex;flex-direction:column;gap:12px}
+.flab{font:600 13px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--ivMut)}
+.fmicro{font:italic 400 15px 'Hanken Grotesk',sans-serif;color:rgba(241,235,223,.48);margin-top:7px}
+.in{background:transparent;border:0;border-bottom:1px solid rgba(241,235,223,.32);color:var(--ivory);font:400 19px 'Hanken Grotesk',sans-serif;padding:4px 0 13px;outline:none;border-radius:0;transition:border-color .25s;width:100%;box-sizing:border-box}
+.in:focus{border-color:var(--goldB)}
+.in::placeholder{color:rgba(241,235,223,.34)}
+.insel{appearance:none;-webkit-appearance:none;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,rgba(241,235,223,.6) 50%),linear-gradient(135deg,rgba(241,235,223,.6) 50%,transparent 50%);background-position:calc(100% - 14px) 12px,calc(100% - 9px) 12px;background-size:5px 5px;background-repeat:no-repeat}
+.insel option{background:var(--ink);color:var(--ivory)}
+.insel:required:invalid{color:rgba(241,235,223,.4)}
+.insel option[value=""]{color:rgba(241,235,223,.55)}
+.tsellab{display:block;margin:48px 0 24px}
+.tsel{display:flex;align-items:stretch}
+.topt{flex:1;padding:0 40px 22px 0;cursor:pointer;transition:opacity .25s;position:relative;opacity:.52;border-bottom:1px solid rgba(241,235,223,.24)}
+.topt:hover{opacity:.8}
+.topt2{padding:0 0 22px 40px;border-left:1px solid rgba(241,235,223,.2)}
+.topt.sel{opacity:1}
+.topt.sel::after{content:'';position:absolute;left:0;right:40px;bottom:-1px;height:2px;background:var(--goldB)}
+.topt2.sel::after{left:40px;right:0}
+.toptt{font-family:'Fraunces',serif;font-size:25px;font-weight:420;margin:0 0 7px}
+.toptd{font:italic 400 16px 'Hanken Grotesk',sans-serif;color:var(--ivMut)}
+.ck{display:flex;gap:17px;cursor:pointer;align-items:flex-start;margin-top:28px}
+.box{width:20px;height:20px;border:1px solid rgba(241,235,223,.5);flex:none;margin-top:3px;display:flex;align-items:center;justify-content:center;transition:border-color .2s;font:600 13px 'Hanken Grotesk',sans-serif;color:var(--goldB)}
+.box.sel{border-color:var(--goldB)}
+.box.sel::after{content:'✓'}
+.cktx{font-size:16.5px;line-height:1.65;color:var(--ivMut)}
+.cktx a{color:var(--goldB);text-decoration:none;border-bottom:1px solid rgba(233,211,166,.4)}
+.sub{font:600 15px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--ivory);border:1px solid rgba(241,235,223,.5);background:rgba(16,12,8,.35);padding:23px 50px;cursor:pointer;margin-top:48px;transition:background .25s,color .25s,opacity .25s}
+.sub:hover{background:var(--ivory);color:var(--ink)}
+.sub:disabled{opacity:.34;cursor:not-allowed;background:rgba(16,12,8,.35);color:var(--ivory)}
+.ferr{font:italic 400 17px 'Hanken Grotesk',sans-serif;color:#D98A77;margin-top:30px}
+.conf{padding:60px 0}
+.ftr{background:var(--ink2);color:var(--ivory);padding:120px 84px 56px;position:relative}
+.ftrg{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:60px;padding-bottom:90px}
+.flh{font:600 12.5px 'Hanken Grotesk',sans-serif;letter-spacing:.26em;text-transform:uppercase;color:rgba(241,235,223,.45);margin-bottom:24px}
+.flk{display:block;font:400 17.5px/2.1 'Hanken Grotesk',sans-serif;color:var(--ivMut);text-decoration:none;transition:color .2s}
+.flk:hover{color:var(--ivory)}
+.legal{display:flex;justify-content:space-between;gap:40px;color:rgba(241,235,223,.42);font-size:15px;line-height:1.7}
+@media (max-width:1080px){
+.folio{padding:120px 28px 100px}
+.hnav{display:none}
+.hdr{padding:0 24px}
+.threadwrap{display:none}
+.covarc,.covI,.covdots{display:none}
+.covnum{right:28px}
+.premcurves{display:none}
+.annlayer{position:relative;z-index:2;inset:auto;display:grid;gap:30px;margin-top:56px}
+.ann{position:static;max-width:none}
+.annR{align-items:flex-start;text-align:left}
+.brow{margin-top:60px}
+.proofs{grid-template-columns:1fr;gap:44px;margin-top:70px}
+.stats{gap:56px;flex-wrap:wrap}
+.evwm{opacity:.035;font-size:clamp(150px,50vw,300px);top:1%}
+.evfield{grid-template-columns:1fr;row-gap:56px;margin-top:80px}
+.evitem{grid-column:1/2!important}
+.evaside{border-left:0;padding-left:0}
+.evimg{grid-column:1/2!important;height:220px;margin-top:0!important}
+.ev-final{padding-top:36px}
+.tiers{grid-template-columns:1fr}
+.tcard{padding:52px 34px 44px;min-height:0}
+.tsel{flex-direction:column}
+.topt{padding:0 0 22px}
+.topt2{border-left:0;border-top:1px solid rgba(241,235,223,.2);padding:26px 0 22px}
+.topt.sel::after{right:0}
+.topt2.sel::after{left:0}
+.applyg{grid-template-columns:1fr;gap:56px}
+.fgrid{grid-template-columns:1fr}
+.ftrg{grid-template-columns:1fr 1fr;gap:40px}
+.foot{left:28px;right:28px}
+.qb{padding:0 0 30px}
+.band{padding:100px 28px}
+}
+</style>
+</helmet>
+<header class="hdr dk"><a class="hbrand" href="#top"><span class="hmono">P</span><span class="hword">The Pediment</span></a><nav class="hnav"><a class="hlink" href="#about">The Gathering</a><a class="hlink" href="#prologue">The Prologue</a><a class="hlink" href="#pillars">Pillars</a><a class="hlink" href="#experience">Experience</a><a class="hlink" href="#faq">FAQ</a></nav><div class="hcta"><a class="hpart" href="#footer">Partner with us</a><a class="hreq" href="#apply">Request Invitation</a></div></header>
+<div class="threadwrap"></div>
+<section class="folio inkf grain" id="top" data-dk="1" data-th="0.5" data-screen-label="01 Cover">
+<div class="bgi flipx" style="background-image:url('assets/threshold-door.png')"></div><div class="scrim scr-cover"></div>
+<div class="covarc"></div><div class="covI">I</div><div class="covdots"><span></span><span></span><span class="lit"></span></div><span class="lab2 covnum">No. 01</span>
+<div class="covwrap rv"><div class="disp covThe">The</div><h1 class="disp covName">Pediment</h1><p class="covSub">An invitation-only institution<br>for India's most vetted<br>emerging leaders.</p></div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<section class="folio paper grain" id="hero" data-dk="0" data-th="0.08" data-screen-label="02 The Premise">
+<div class="bgi" style="background-image:url('assets/plaster-pale.png')"></div><div class="scrim scr-premise"></div>
+<div class="eb"><span class="kick">No. 02 · The Premise</span><span class="lab2">Folio II</span></div>
+<div class="prem"><p class="kick rv" style="margin:40px 0 44px">The Pediment presents</p>
+<h2 class="disp premT rv"><span class="premThe">The</span><span class="premBig">Leadership</span><span class="premBig">Prologue</span><span class="premYr">2026</span></h2></div>
+<svg class="premcurves" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true"><path class="pc" d="M30 130 C150 330 230 540 560 800"></path><path class="pc" d="M1425 175 C1280 380 1180 570 1340 850"></path><path class="pc" d="M180 845 C560 760 950 800 1305 690"></path></svg>
+<div class="annlayer">
+<div class="ann annTrip rv"><p class="premTrip m0">A single evening.<br>A curated room.<br>A beginning that lasts.</p></div>
+<div class="ann annA rv"><span class="anndot"></span><span class="annk">Date</span><span class="annv">05 August 2026</span></div>
+<div class="ann annB rv"><span class="anndot"></span><span class="annk">Place</span><span class="annv">Bangalore, India</span></div>
+<div class="ann annC annR rv"><span class="anndot"></span><span class="annk">Format</span><span class="annv">Invitation-first, single-evening summit</span></div>
+<div class="ann annD annR rv"><span class="anndot"></span><span class="annk">Host</span><span class="annv">The Pediment</span></div>
+<div class="ann annE annR rv"><a class="cta" href="#apply">Request an Invitation <span class="arrow">→</span></a><p class="ctanote stonec" style="margin:16px 0 0">By application only.<br>A limited, curated room.</p></div>
+<div class="ann annF rv"><p class="bd stonec m0">An invitation-first convergence of India's most vetted emerging leaders — across global governance, leadership, technology, AI, and healthcare — on the eve of their journey to the world stage.</p></div>
+</div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<section class="folio paper grain" id="about" data-dk="0" data-th="0.92" data-screen-label="03 The Gathering">
+<div class="bgi" style="background-image:url('assets/hall-ivory.png')"></div><div class="scrim scr-gath"></div>
+<div class="eb"><span class="kick">No. 03 · The Gathering</span><span class="lab2">Folio III</span></div>
+<div class="gathwrap"><h2 class="st rv">Not a conference.<br>A gathering<span class="oxc">.</span></h2>
+<p class="lead rv" style="max-width:54ch;margin:48px 0 0">The Pediment curates leadership experiences for people who rarely find themselves in the same room — and should. We build for intimacy over scale: curated conversations, considered company, and connections that outlast the evening.</p>
+<p class="bd stonec rv" style="max-width:54ch;margin:28px 0 0">The Leadership Prologue is our inaugural gathering — a single, deliberate evening designed around the people in it.</p></div>
+<div class="proofs">
+<div class="rv"><div class="pnum">01</div><h3 class="plabel">Invitation-first</h3><p class="ptext m0">Access is by selection or application. The room is the product.</p></div>
+<div class="rv"><div class="pnum">02</div><h3 class="plabel">Editorial craft</h3><p class="ptext m0">Every detail — from the guest list to the lighting — is composed, not assembled.</p></div>
+<div class="rv"><div class="pnum">03</div><h3 class="plabel">Meaningful proximity</h3><p class="ptext m0">Founders, operators, researchers, and the institutions that want to meet them, in one room.</p></div>
+</div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<section class="folio oxf grain" id="prologue" data-dk="1" data-th="0.1" data-screen-label="04 The Prologue">
+<div class="bgi" style="background-image:url('assets/oxblood-beam.png')"></div><div class="scrim scr-oxb"></div>
+<div class="eb"><span class="kick">No. 04 · The Prologue</span><span class="lab2">Folio IV</span></div>
+<div class="oxwrap">
+<h2 class="st rv" style="font-size:clamp(56px,5.4vw,82px)">Before the world stage,<br>the room that matters<span class="goldc">.</span></h2>
+<p class="lead rv ivm" style="max-width:62ch;margin:56px auto 0">Each year, a small, fiercely selected group of India's emerging leaders is chosen to represent the country on the international stage in Asia. They are founders, researchers, policy minds, and operators — and most of them have never met.</p>
+<p class="bd rv" style="max-width:62ch;margin:26px auto 0;color:rgba(241,235,223,.6)">The Leadership Prologue is the evening before they leave. We bring the cohort together on home ground — at the height of their momentum — alongside the companies, funds, and institutions eager to know them first. It is a beginning, not a footnote: the prologue to what this generation builds next.</p>
+<div class="stats rv"><div class="tc"><div class="statn">1</div><div class="statl">Single<br>Evening</div></div><div class="tc"><div class="statn">5</div><div class="statl">Core<br>Themes</div></div><div class="tc"><div class="statn">1</div><div class="statl">Curated<br>Room</div></div><div class="tc"><div class="statn it" style="font-size:54px">∞</div><div class="statl">Possibilities<br>that follow</div></div></div>
+</div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<section class="folio inkf grain" id="pillars" data-dk="1" data-th="0.9" data-screen-label="05 The Convergence">
+<div class="bgi" style="background-image:url('assets/columns-dark.png')"></div><div class="scrim scr-pill"></div>
+<div class="eb"><span class="kick">No. 05 · The Convergence</span><span class="lab2">Folio V</span></div>
+<div class="pillwrap"><h2 class="st rv">Five conversations<br>shaping the decade<span class="goldc">.</span></h2>
+<div style="margin-top:36px">
+<div class="theme rv"><span class="thnum">I</span><div><h3 class="thname">Global Governance</h3><p class="thdesc m0">Power, policy, and the institutions redrawing the world order.</p></div></div>
+<div class="theme rv"><span class="thnum">II</span><div><h3 class="thname">Leadership</h3><p class="thdesc m0">The character and craft of building things that last.</p></div></div>
+<div class="theme rv"><span class="thnum">III</span><div><h3 class="thname">Technology</h3><p class="thdesc m0">The tools quietly rewriting how everything works.</p></div></div>
+<div class="theme rv"><span class="thnum">IV</span><div><h3 class="thname">Artificial Intelligence</h3><p class="thdesc m0">Intelligence as infrastructure, and the people directing it.</p></div></div>
+<div class="theme rv"><span class="thnum">V</span><div><h3 class="thname">Healthcare</h3><p class="thdesc m0">Longevity, access, and the frontier of human health.</p></div></div>
+</div>
+<p class="rv it serif" style="font-size:23px;line-height:1.6;color:rgba(241,235,223,.62);max-width:52ch;margin:64px 0 0">And a closing word on Climate — the backdrop against which every one of these conversations will be judged.</p></div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<section class="folio paper grain" id="experience" data-dk="0" data-th="0.08" data-screen-label="06 The Evening">
+<div class="bgi" style="background-image:url('assets/travertine-curve.png')"></div><div class="scrim scr-eve"></div>
+<div class="eb"><span class="kick">No. 06 · The Evening</span><span class="lab2">Folio VI</span></div>
+<div class="evwrap"><div class="evwm" aria-hidden="true">VI</div><svg class="evline" aria-hidden="true"><path class="evseg" data-seg="0"></path><path class="evseg" data-seg="1"></path><path class="evseg" data-seg="2"></path><path class="evseg" data-seg="3"></path><path class="evseg" data-seg="4"></path></svg><div class="evhead evrv"><h2 class="st">What the evening gives you<span class="oxc">.</span></h2><p class="ctanote stonec" style="margin:28px 0 0;max-width:34ch">Five commitments, made to every guest in the room.</p></div><div class="evfield">
+<div class="evitem ev-callout evrv" style="grid-column:1/6" data-ev="1"><div class="evmk"><span class="evdot"></span><span class="evnum">I</span><span class="evreg lab2">Folio VI · i</span></div><h3 class="evtitle">A curated room</h3><p class="bd stonec evbody">Every guest is selected. You will not waste a conversation.</p></div>
+<div class="evitem ev-quote evrv" style="grid-column:7/13" data-ev="2"><span class="evdot evdotb"></span><h3 class="evtitle evtitle-lg">Direct access</h3><p class="bd stonec evbody evaside">Meet the recruiters, founders, funds, and institutions actively seeking this generation — in structured, intentional settings, <span class="it">not a crowd</span>.</p></div>
+<div class="evitem ev-break evrv" style="grid-column:2/8" data-ev="3"><span class="evdot evdotb"></span><h3 class="evtitle">Studio-grade presence</h3><p class="bd stonec evbody"><span class="evlede">A professional photo and film team captures the evening at a standard built for the world to see.</span> You leave with imagery worthy of your ambition.</p></div>
+<div class="evimg evrv" style="grid-column:9/12;margin-top:56px" aria-hidden="true"></div>
+<div class="evitem ev-quote evrv" style="grid-column:6/12" data-ev="4"><span class="evdot evdotb"></span><h3 class="evtitle evtitle-lg">Considered hospitality</h3><p class="bd stonec evbody evaside">Premium food, drink, and design — an environment that respects the people in it.</p></div>
+<div class="evitem ev-final evrv" style="grid-column:1/12" data-ev="5"><div class="evmk"><span class="evdot"></span><span class="evnum">V</span><span class="evreg lab2">Folio VI · v</span></div><h3 class="evtitle">Support for the journey</h3><p class="bd stonec evbody">Up to five travel grants, funded from partner surplus, may support outstanding delegates on their way to the world stage. <span class="it evdisc">Conditional — awarded from surplus, not guaranteed.</span></p></div>
+</div></div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<section class="folio paper grain" id="tiers" data-dk="0" data-th="0.5" data-screen-label="07 Two Ways In">
+<div class="bgi" style="background-image:url('assets/travertine-close.png')"></div><div class="scrim scr-adm"></div>
+<div class="eb"><span class="kick">No. 07 · The Admission</span><span class="lab2">Folio VII</span></div>
+<h2 class="st rv" style="margin-top:80px;position:relative;z-index:2">Two ways in<span class="oxc">.</span></h2>
+<div class="tiers">
+<div class="tcard tvip rv"><span class="tkick">Card A</span><h3 class="tname">VIP Delegate</h3><span class="tby">By invitation &amp; application.</span>
+<p class="bd tbody" style="color:rgba(241,235,223,.7)">For selected delegates representing India on the international stage. Priority seating, full access to the evening, onboarding into the delegate network, and eligibility for travel-grant consideration.</p>
+<p class="ctanote" style="color:rgba(241,235,223,.48);margin:0 0 32px">No price shown. VIP onboarding is handled privately after selection.</p>
+<a class="cta" href="#apply">Request Invitation <span class="arrow">→</span></a></div>
+<div class="tcard tobs rv"><span class="tkick">Card B</span><h3 class="tname">Premium Observer</h3><span class="tby stonec">By application.</span>
+<p class="bd tbody stonec">For a small number of exceptional national leaders, operators, and emerging professionals invited to join the room.</p>
+<div style="margin-bottom:36px"><span class="pricek">Inaugural Early Access</span><div class="price">₹5,000</div><p class="pricen m0">Limited allocation; the rate rises once it closes.<br>Non-refundable.</p></div>
+<a class="cta" href="#apply">Reserve Your Seat <span class="arrow">→</span></a></div>
+</div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<section class="band oxf grain" id="speakers" data-dk="1" data-th="0.08" data-screen-label="08 In the Room">
+<div class="bgi" style="background-image:url('assets/oxblood-beam.png');background-position:center 78%"></div><div class="scrim scr-band"></div>
+<div class="eb" style="position:relative;z-index:2"><span class="kick">No. 08 · In the Room</span><span class="lab2">Folio VIII</span></div>
+<div class="bwrap">
+<p class="lab2 bkick rv m0">Speakers &amp; Partners</p>
+<h2 class="disp banchor rv">The Leadership<br>Prologue 2026</h2>
+<p class="bital rv">will be announced shortly.</p>
+<div class="brow rv"><span class="bopen">Applications are open now.</span><span class="bfill">The room fills by selection.</span></div>
+</div>
+</section>
+<section class="folio paper grain" id="faq" data-dk="0" data-th="0.92" data-screen-label="09 Correspondence" style="background:var(--paper)">
+<div class="eb"><span class="kick">No. 09 · Correspondence</span><span class="lab2">Folio IX</span></div>
+<h2 class="st rv" style="margin-top:80px">Questions, answered<span class="oxc">.</span></h2>
+<div class="qwrap rv">
+<div class="qpart"><span>Part One — The Gathering</span><span class="qprange">i–viii</span></div><hr class="qphr">
+<details class="qa"><summary class="qs"><span class="qnum">i</span><h3 class="qt">What is The Leadership Prologue 2026?</h3></summary><div class="qb">The Leadership Prologue 2026 is an invitation-first, single-evening leadership summit hosted by The Pediment in Bangalore on 5 August 2026. It convenes India's most vetted emerging leaders — founders, researchers, policy minds, and operators — with the institutions that want to meet them, on the eve of their journey to represent India on the international stage.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">ii</span><h3 class="qt">When and where is it?</h3></summary><div class="qb">5 August 2026, in Bangalore, India. The venue is shared with confirmed guests.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">iii</span><h3 class="qt">Who attends?</h3></summary><div class="qb">Selected delegates representing India abroad (VIP Delegates) and a small, curated group of exceptional national leaders and professionals (Premium Observers). Every guest is selected.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">iv</span><h3 class="qt">Can international applicants apply?</h3></summary><div class="qb">This edition is India-only. The Leadership Prologue 2026 is focused on India's emerging leaders and professionals based in India.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">v</span><h3 class="qt">Is there a minimum age to attend?</h3></summary><div class="qb">There is no formal age minimum. Admission is by selection, not age.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">vi</span><h3 class="qt">Are travel grants guaranteed?</h3></summary><div class="qb">No. Up to five travel grants may be awarded to outstanding delegates, funded from partner surplus. They are conditional and not guaranteed.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">vii</span><h3 class="qt">Will the evening be photographed?</h3></summary><div class="qb">Yes. A professional team documents the evening for promotional and commercial use. All guests consent to being photographed and recorded when they apply (see the media waiver).</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">viii</span><h3 class="qt">What is the dress code?</h3></summary><div class="qb">Details are shared directly with confirmed guests closer to the event.</div></details>
+<div class="qpart qpart-x"><svg class="qcross" viewBox="0 0 44 16" aria-hidden="true"><path d="M2 13C12 13 16 3 42 3"></path></svg><span>Part Two — The Pediment</span><span class="qprange">ix–xiii</span></div><hr class="qphr">
+<details class="qa"><summary class="qs"><span class="qnum">ix</span><h3 class="qt">What is The Pediment?</h3></summary><div class="qb">The Pediment is a premium leadership-experience company that curates exclusive, invitation-first gatherings for exceptional emerging leaders. The Leadership Prologue 2026 is its inaugural flagship event.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">x</span><h3 class="qt">Is The Leadership Prologue 2026 the same as The Pediment?</h3></summary><div class="qb">No. The Pediment is the parent organisation; The Leadership Prologue 2026 is its first gathering, with future editions planned beyond it.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xi</span><h3 class="qt">How is The Pediment different from other leadership summits?</h3></summary><div class="qb">The Pediment is invitation-first and intentionally small — built for curated conversation and direct access, not conference-scale attendance. Every guest is selected.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xii</span><h3 class="qt">Who is behind The Pediment?</h3></summary><div class="qb">The Pediment is built and operated by a small founding team dedicated to curating exceptional leadership experiences.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xiii</span><h3 class="qt">Is the summit affiliated with any international conference?</h3></summary><div class="qb">No. The Leadership Prologue 2026 is an independent summit by The Pediment and is not affiliated with or endorsed by any external conference or organisation.</div></details>
+<div class="qpart qpart-x"><svg class="qcross" viewBox="0 0 44 16" aria-hidden="true"><path d="M2 13C12 13 16 3 42 3"></path></svg><span>Part Three — Applying &amp; Policy</span><span class="qprange">xiv–xx</span></div><hr class="qphr">
+<details class="qa"><summary class="qs"><span class="qnum">xiv</span><h3 class="qt">How do I attend?</h3></summary><div class="qb">Every guest applies. Submit the application form; The Pediment's team reviews each application personally and confirms your place. Admission is by selection.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xv</span><h3 class="qt">Can I apply if I wasn't personally invited?</h3></summary><div class="qb">Yes. VIP Delegate places are extended to selected representatives; Premium Observer seats are open to application from exceptional national leaders, operators, and professionals. Every guest applies; admission is by selection.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xvi</span><h3 class="qt">What does it cost?</h3></summary><div class="qb">Premium Observer seats are offered at Inaugural Early Access — ₹5,000, a limited allocation; the rate rises once it closes, and it is non-refundable. Selected VIP Delegates are onboarded directly, with details shared privately on confirmation.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xvii</span><h3 class="qt">What is the refund policy for Premium Observer seats?</h3></summary><div class="qb">The Inaugural Early Access (₹5,000) fee is non-refundable. In the rare event of a date change, your reservation carries over in full. See the Refund Policy.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xviii</span><h3 class="qt">What happens if the event date or venue changes?</h3></summary><div class="qb">Your place is fully honoured — it carries over to the rescheduled date, and our team confirms new details with you directly.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xix</span><h3 class="qt">I represent a company or fund — can we partner?</h3></summary><div class="qb">Yes. Use "Partner with us" and The Pediment's team will share the partnership brief directly.</div></details>
+<details class="qa"><summary class="qs"><span class="qnum">xx</span><h3 class="qt">How is my data used?</h3></summary><div class="qb">Only to process your application, communicate with you, and — in aggregated, permissioned form — introduce the cohort to selected partners. See the Privacy Policy.</div></details>
+</div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<section class="folio inkf grain" id="apply" data-dk="1" data-th="0.12" data-screen-label="10 The Threshold">
+<div class="bgi" style="background-image:url('assets/threshold-door.png')"></div><div class="scrim scr-apply"></div>
+<div class="eb"><span class="kick">No. 10 · The Threshold</span><span class="lab2">Folio X</span></div>
+<div class="applyg">
+<div><h2 class="st rv">Request your invitation<span class="goldc">.</span></h2>
+<p class="premTrip rv" style="color:var(--goldB);margin:48px 0 0">A limited, curated room.<br>Tell us who you are.</p>
+<p class="bd rv ivm" style="max-width:38ch;margin:32px 0 0">Every application is read personally. The room fills by selection — keep an eye on your email and WhatsApp.</p></div>
+<div>
+<sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{ submit }}" noValidate="{{ true }}">
+<div class="rv"><label class="flab tsellab">Apply As</label><div class="tsel"><div class="{{ vipCls }}" onClick="{{ pickVip }}"><h4 class="toptt m0">VIP Delegate</h4><span class="toptd">Representing India abroad</span></div><div class="{{ obsCls }} topt2" onClick="{{ pickObs }}"><h4 class="toptt m0">Premium Observer</h4><span class="toptd">By application</span></div></div></div>
+<div class="fgrid rv">
+<div class="fld"><label class="flab">Full name</label><input class="in" name="full_name" type="text"></div>
+<div class="fld"><label class="flab">Email</label><input class="in" name="email" type="email"><span class="fmicro">We'll send confirmation here</span></div>
+<div class="fld"><label class="flab">WhatsApp number</label><input class="in" name="phone" type="tel" placeholder="+91"><span class="fmicro">Onboarding happens on WhatsApp</span></div>
+<div class="fld"><label class="flab">LinkedIn profile</label><input class="in" name="linkedin_url" type="url" placeholder="linkedin.com/in/…"></div>
+<div class="fld"><label class="flab">Instagram handle</label><input class="in" name="instagram_handle" type="text" placeholder="@yourhandle"><span class="fmicro">Used to tag you in event content</span></div>
+<div class="fld"><label class="flab">University / Organisation</label><input class="in" name="affiliation" type="text"></div>
+<div class="fld"><label class="flab">Domain</label><select class="in insel" name="domain_sector"><option>Governance</option><option>Leadership</option><option>Tech</option><option>AI</option><option>Healthcare</option><option>Finance / VC</option><option>Other</option></select></div>
+<div class="fld"><label class="flab">City</label><input class="in" name="city" type="text"></div>
+<sc-if value="{{ isVip }}" hint-placeholder-val="{{ true }}"><div class="fld"><label class="flab">Delegate status</label><select class="in insel" name="delegate_status" required="{{ true }}"><option value="">Select one</option><option value="Accepted">Accepted</option><option value="Applied">Applied</option></select></div></sc-if>
+</div>
+<div class="rv">
+<div class="ck" onClick="{{ tgMw }}"><span class="{{ mwCls }}"></span><span class="cktx">I consent to being photographed and recorded for promotional and commercial use by The Pediment and its official partners. I understand these assets may be distributed globally.</span></div>
+<div class="ck" onClick="{{ tgPv }}"><span class="{{ pvCls }}"></span><span class="cktx">I agree to the <a href="#faq">Terms</a> and consent to The Pediment processing my information as described in the <a href="#faq">Privacy Policy</a>.</span></div>
+<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><p class="ferr m0">{{ err }}</p></sc-if>
+<button class="sub" type="submit" disabled="{{ noSub }}" title="{{ subTip }}">Submit Application</button>
+</div>
+</form>
+</sc-if>
+<sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+<div class="conf"><h3 class="serif" style="font-size:54px;font-weight:400;margin:0">Your application is in<span class="goldc">.</span></h3>
+<p class="lead ivm" style="max-width:52ch;margin:36px 0 0">{{ confBody }}</p>
+<p class="ctanote" style="color:rgba(241,235,223,.52);margin:26px 0 0">Keep an eye on your email and WhatsApp. The room fills by selection.</p></div>
+</sc-if>
+</div>
+</div>
+<div class="foot"><span class="lab2">Vol. I</span><span class="lab2">Bangalore&nbsp;&nbsp;·&nbsp;&nbsp;5 August 2026</span><span class="lab2">MMXXVI</span></div>
+</section>
+<footer class="ftr grain" id="footer" data-dk="1" data-th="0.5" data-screen-label="Footer">
+<div class="ftrg">
+<div><div class="hbrand" style="margin-bottom:24px"><span class="hmono" style="font-size:30px">P</span><span class="hword" style="font-size:15px">The Pediment</span></div><p class="ctanote ivm" style="margin:0;max-width:30ch">Curators of exceptional leadership experiences.</p><a class="flk" style="margin-top:26px;color:var(--goldB)" href="mailto:hello@thepediment.com">hello@thepediment.com</a></div>
+<div><div class="flh">The Prologue</div><a class="flk" href="#prologue">The Prologue</a><a class="flk" href="#pillars">Pillars</a><a class="flk" href="#experience">Experience</a><a class="flk" href="#faq">FAQ</a></div>
+<div><div class="flh">Take part</div><a class="flk" href="#apply">Request Invitation</a><a class="flk" href="mailto:hello@thepediment.com">Partner with us</a><a class="flk" href="#">LinkedIn</a><a class="flk" href="#">Instagram</a><a class="flk" href="#">X</a></div>
+<div><div class="flh">Legal</div><a class="flk" href="#">Privacy</a><a class="flk" href="#">Terms</a><a class="flk" href="#">Refunds</a><a class="flk" href="#">Cookies</a></div>
+</div>
+<div class="legal"><span style="max-width:64ch">The Leadership Prologue 2026 is an independent summit by The Pediment. It is not affiliated with or endorsed by any external conference or organisation.</span><span class="nowrap">© 2026 The Pediment. All rights reserved.</span></div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#5E2029&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#5E2029&quot;,&quot;#4A2330&quot;,&quot;#233A2C&quot;,&quot;#1F2A44&quot;],&quot;section&quot;:&quot;Brand&quot;},&quot;thread&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Atmosphere&quot;},&quot;grain&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Atmosphere&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Atmosphere&quot;}}">
+class Component extends DCLogic {
+  state = { tier: 'vip', mw: false, pv: false, done: false, err: '' };
+  componentDidMount() { this.applyPrefs(); this.setupObs(); this.setupThread(); this.setupEvLine(); }
+  setupEvLine() {
+    if (this._evl) return; this._evl = 1;
+    const build = () => this.buildEvLine();
+    addEventListener('resize', build);
+    addEventListener('load', build);
+    [400, 1000, 2000, 3500].forEach(t => setTimeout(build, t));
+    build();
+    this._evIo = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('on');
+          const dot = e.target.querySelector('.evdot'); if (dot) dot.classList.add('on');
+          const idx = parseInt(e.target.dataset.ev || '0', 10);
+          if (idx) this.drawEvSeg(idx);
+          this._evIo.unobserve(e.target);
+          setTimeout(build, 320);
+        }
+      });
+    }, { threshold: .3, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('#experience .evrv').forEach(el => this._evIo.observe(el));
+    addEventListener('scroll', () => this.evParallax(), { passive: true });
+    this.evParallax();
+  }
+  buildEvLine() {
+    const wrap = document.querySelector('#experience .evwrap');
+    const svg = document.querySelector('#experience .evline');
+    if (!wrap || !svg) return;
+    const dots = [...wrap.querySelectorAll('.evfield .evdot')];
+    if (dots.length < 2) return;
+    const wr = wrap.getBoundingClientRect();
+    const W = wr.width, H = wrap.scrollHeight;
+    svg.setAttribute('viewBox', '0 0 ' + Math.round(W) + ' ' + Math.round(H));
+    const head = wrap.querySelector('.evhead');
+    const hr = head ? head.getBoundingClientRect() : null;
+    const pts = dots.map(d => { const r = d.getBoundingClientRect(); return [r.left + r.width / 2 - wr.left, r.top + r.height / 2 - wr.top]; });
+    const entry = hr ? [pts[0][0], hr.bottom - wr.top + 14] : [pts[0][0], pts[0][1] - 70];
+    const all = [entry, ...pts];
+    this._evSegs = this._evSegs || [...svg.querySelectorAll('.evseg')];
+    this._evSegs.forEach((seg, i) => {
+      if (i + 1 >= all.length) { seg.setAttribute('d', ''); return; }
+      const [x0, y0] = all[i], [x1, y1] = all[i + 1], my = (y0 + y1) / 2;
+      seg.setAttribute('d', 'M' + x0.toFixed(1) + ' ' + y0.toFixed(1) + 'C' + x0.toFixed(1) + ' ' + my.toFixed(1) + ',' + x1.toFixed(1) + ' ' + my.toFixed(1) + ',' + x1.toFixed(1) + ' ' + y1.toFixed(1));
+      const len = seg.getTotalLength();
+      seg.style.strokeDasharray = len;
+      if (!seg.classList.contains('on')) seg.style.strokeDashoffset = len;
+    });
+  }
+  drawEvSeg(idx) {
+    const seg = this._evSegs && this._evSegs[idx - 1];
+    if (!seg) return;
+    seg.classList.add('on');
+    seg.style.strokeDashoffset = 0;
+  }
+  evParallax() {
+    const sec = document.getElementById('experience');
+    if (!sec) return;
+    const bgi = sec.querySelector('.bgi');
+    if (!bgi) return;
+    if (document.body.classList.contains('nomo')) { bgi.style.transform = ''; return; }
+    const r = sec.getBoundingClientRect();
+    const prog = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height)));
+    bgi.style.transform = 'translateY(' + ((prog - .5) * 22).toFixed(1) + 'px)';
+  }
+  componentDidUpdate() { this.applyPrefs(); const w = document.querySelector('.threadwrap'); if (w) w.style.display = (this.props.thread ?? true) ? '' : 'none'; }
+  applyPrefs() {
+    const b = document.body;
+    b.classList.toggle('nograin', !(this.props.grain ?? true));
+    const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    b.classList.toggle('nomo', rm || !(this.props.motion ?? true));
+    document.documentElement.style.setProperty('--ox', this.props.accent ?? '#5E2029');
+  }
+  setupObs() {
+    if (this._obs) return; this._obs = 1;
+    this._io = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); this._io.unobserve(e.target); } });
+    }, { threshold: .08, rootMargin: '0px 0px -6% 0px' });
+    const scan = () => {
+      document.querySelectorAll('.folio,.band').forEach(f => {
+        f.querySelectorAll('.rv').forEach((el, i) => { el.style.transitionDelay = Math.min(i * 70, 560) + 'ms'; });
+      });
+      document.querySelectorAll('.rv:not([data-obs])').forEach(el => { el.setAttribute('data-obs', '1'); this._io.observe(el); });
+    };
+    scan();
+    [300, 900, 2000].forEach(t => setTimeout(scan, t));
+    this._mo = new MutationObserver(() => scan());
+    this._mo.observe(document.body, { childList: true, subtree: true });
+    const upd = () => {
+      const hdr = document.querySelector('.hdr');
+      const secs = document.querySelectorAll('[data-dk]');
+      let dk = true;
+      for (const s of secs) { const r = s.getBoundingClientRect(); if (r.top <= 80 && r.bottom > 80) { dk = s.dataset.dk === '1'; break; } }
+      if (hdr) hdr.classList.toggle('dk', dk);
+      this.updThread();
+    };
+    addEventListener('scroll', upd, { passive: true }); upd();
+  }
+  setupThread() {
+    if (this._th) return; this._th = 1;
+    const build = () => this.buildThread();
+    addEventListener('resize', build);
+    addEventListener('load', build);
+    [400, 1200, 2500, 5000].forEach(t => setTimeout(build, t));
+    build();
+  }
+  buildThread() {
+    const wrap = document.querySelector('.threadwrap');
+    const secs = [...document.querySelectorAll('[data-th]')];
+    if (!wrap || secs.length < 3 || innerWidth <= 1080) return;
+    const W = document.body.clientWidth, H = Math.round(document.body.scrollHeight);
+    wrap.style.height = H + 'px';
+    const top = el => el.getBoundingClientRect().top + scrollY;
+    const pts = [];
+    secs.forEach((s, i) => {
+      const x = parseFloat(s.dataset.th) * W;
+      pts.push(i === 0 ? [x, top(s) + s.offsetHeight * .86] : [x, top(s)]);
+    });
+    const last = secs[secs.length - 1];
+    pts.push([W * .5, top(last) + last.offsetHeight * .7]);
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 1; i < pts.length; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], my = (y0 + y1) / 2;
+      d += 'C' + x0.toFixed(1) + ' ' + my.toFixed(1) + ',' + x1.toFixed(1) + ' ' + my.toFixed(1) + ',' + x1.toFixed(1) + ' ' + y1.toFixed(1);
+    }
+    let stops = '';
+    secs.forEach(s => {
+      const y = (top(s) + s.offsetHeight / 2) / H;
+      const c = s.dataset.dk === '1' ? 'rgba(233,211,166,.75)' : 'rgba(94,32,41,.6)';
+      stops += '<stop offset="' + (y * 100).toFixed(2) + '%" stop-color="' + c + '"/>';
+    });
+    wrap.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none"><defs><linearGradient id="tgrad" x1="0" y1="0" x2="0" y2="1">' + stops + '</linearGradient></defs><path class="tpath" stroke="url(#tgrad)" d="' + d + '"/></svg>';
+    const p = wrap.querySelector('.tpath');
+    this._len = p.getTotalLength();
+    p.setAttribute('stroke-dasharray', this._len);
+    this._tp = p;
+    this.updThread();
+  }
+  updThread() {
+    if (!this._tp || !this._len) return;
+    const prog = Math.min(1, Math.max(0, (scrollY + innerHeight * .92) / document.body.scrollHeight));
+    this._tp.style.strokeDashoffset = (this._len * (1 - prog)).toFixed(1);
+  }
+  submit(e) {
+    e.preventDefault();
+    const el = e.target.elements;
+    const v = n => { const f = el.namedItem(n); return f ? f.value.trim() : ''; };
+    if (!v('full_name')) return this.setState({ err: 'Please enter your full name.' });
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email'))) return this.setState({ err: "That doesn't look like a valid email." });
+    if (!v('phone')) return this.setState({ err: 'Include your country code, e.g. +91…' });
+    if (!v('linkedin_url')) return this.setState({ err: 'Please paste your full LinkedIn URL.' });
+    if (!v('instagram_handle')) return this.setState({ err: 'Please share your Instagram handle.' });
+    if (this.state.tier === 'vip' && !v('delegate_status')) return this.setState({ err: 'Please select your delegate status.' });
+    if (!this.state.mw || !this.state.pv) return this.setState({ err: 'This is required to submit.' });
+    this.setState({ err: '', done: true });
+  }
+  renderVals() {
+    const s = this.state;
+    return {
+      isVip: s.tier === 'vip',
+      vipCls: s.tier === 'vip' ? 'topt sel' : 'topt',
+      obsCls: s.tier === 'obs' ? 'topt sel' : 'topt',
+      pickVip: () => this.setState({ tier: 'vip' }),
+      pickObs: () => this.setState({ tier: 'obs' }),
+      mwCls: s.mw ? 'box sel' : 'box',
+      pvCls: s.pv ? 'box sel' : 'box',
+      tgMw: () => this.setState({ mw: !s.mw }),
+      tgPv: () => this.setState({ pv: !s.pv }),
+      noSub: !(s.mw && s.pv),
+      subTip: (s.mw && s.pv) ? '' : 'Please accept the media waiver and privacy terms to continue.',
+      err: s.err, hasErr: !!s.err, done: s.done, notDone: !s.done,
+      submit: e => this.submit(e),
+      confBody: s.tier === 'vip'
+        ? "Thank you for applying to The Leadership Prologue. Our team reviews every application personally. If selected, you'll hear from us on WhatsApp with your next steps."
+        : "Thank you for applying. Our team reviews every application personally. If your place is confirmed, we'll send your reservation details and payment link shortly."
+    };
+  }
+}
+</script>
+</body>
+</html>
