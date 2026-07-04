@@ -3,3 +3,10 @@ modules/*
 !modules/07-delegate-supply-and-ticketing.md
 The Pediment Execution Manual.md
 .DS_Store
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
