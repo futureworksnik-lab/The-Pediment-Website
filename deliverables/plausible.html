@@ -1,0 +1,28 @@
+<!--
+  The Pediment — Plausible analytics snippet
+  Deliver to Emergent for the frontend repo. Drop this into the page ONLY after
+  the cookie-consent banner's "Accept" action fires (see website/03-...md §13.4)
+  — do not load it unconditionally in <head>.
+
+  window.trackEvent is the only analytics API the frontend needs to know about.
+  Call it for the events below; no further Plausible-specific code is needed.
+-->
+<script defer data-domain="thepediment.com" src="https://plausible.io/js/script.js"></script>
+<script>
+  window.trackEvent = function (name, props) {
+    if (window.plausible) window.plausible(name, { props: props });
+  };
+</script>
+
+<!--
+  Events to fire, per PRD FR-11 (call trackEvent(name, props) — props optional):
+    view           — page view / section reached
+    scroll_50      — user has scrolled 50% of the page
+    scroll_90      — user has scrolled 90% of the page
+    apply_start    — user begins the application form
+    apply_submit   — application form submitted (success)
+    partner_submit — partner inquiry form submitted (success)
+
+  Example:
+    trackEvent('apply_submit', { tier: 'vip_delegate' });
+-->

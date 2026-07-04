@@ -1,3 +1,5 @@
-modules/
+modules/*
+!modules/04-legal-entity-and-compliance.md
+!modules/07-delegate-supply-and-ticketing.md
 The Pediment Execution Manual.md
 .DS_Store
