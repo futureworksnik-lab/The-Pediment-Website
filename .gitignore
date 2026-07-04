@@ -1,3 +1,10 @@
 modules/
 The Pediment Execution Manual.md
 .DS_Store
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
