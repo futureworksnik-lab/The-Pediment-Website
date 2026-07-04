@@ -1,0 +1,31 @@
+{
+  "summary": "First testing pass on Phase 1 static HTML/CSS/vanilla-JS port of The Pediment site. Tested: AEO/crawlability via curl (no-JS content), compliance word scan, header dark/light flip, scroll-reveal (.rv), thread-line SVG, Folio VI narrative-spine draw, FAQ accordion (20 items, independent open/close), Apply form full validation chain (all 6 error messages in exact order), tier toggle + delegate-status field visibility, checkbox-gated submit button, VIP and Observer confirmation text (exact match, zero network requests), standalone /apply page, all data-testid hrefs (terms/privacy/partners), domain_sector 'Finance / VC' option, delegate_status blank-default option, phone placeholder/empty-value, expected 404s for Phase-2 pages, and mobile responsive collapse at 390px. Everything tested passed with only one minor cosmetic observation.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Header at mobile width (390px)", "issues": ["Only .hnav (center primary links) is hidden at the 1080px breakpoint per CSS; .hcta (the 'Partner with us' and 'Request Invitation' buttons) remains visible and wraps to two lines on narrow screens, visually crowding/overlapping the 'NO. 01' cover label. Not a functional break, purely cosmetic — flagging since it may not match the intended locked reference design at narrow widths."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: consider also hiding or condensing .hcta buttons (or stacking them below brand) at the 1080px mobile breakpoint to avoid header text wrap/crowding — cosmetic only, not blocking."
+  ],
+  "critical_code_review_comments": [
+    "main.js is a single well-organized IIFE (254 lines) covering 4 concerns (scroll-reveal/header flip, thread-line, Folio VI spine, apply form) — acceptable size, no split needed at this scale.",
+    "Apply form validation and confirmation swap is correctly local-only (verified zero network requests fired during submit) — matches Phase 1/3 scope note.",
+    "All requested data-testid attributes verified present and functioning: tier-toggle-vip/observer, checkbox-media-waiver/privacy-consent, button-submit-application, link-terms/privacy, footer-link-partners, nav-link-partners, select-domain-sector, select-delegate-status, input-phone, faq-item-i..xx, apply-confirmation.",
+    "AEO requirement satisfied: raw curl (no JS execution) of / returns full text of all 20 FAQ Q&As and exact h1 'The Leadership Prologue 2026' — content is not JS-dependent."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A - static shim only, not in scope", "frontend": "100% (1 minor cosmetic note, no functional bugs)"},
+  "test_credentials": "None required - no auth on this app",
+  "seed_data_creation": "None - no database usage in this phase",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Phase 1 static site fully validated: all 10 sections present, scroll-reveal/header-flip/thread-line/Folio-VI-spine animations all work via IntersectionObserver as scroll happens (not instant on load, confirmed by testing 'on' class before/after scroll). FAQ accordion (20 native details/summary) opens independently, multiple open at once. Apply form: tier toggle correctly shows/hides delegate-status field, submit disabled until both checkboxes checked, validation fires in exact specified order with exact copy, VIP and Observer confirmation texts match exactly word-for-word, and NO network request is made on submit (confirmed via request listener returning empty list) — correct per Phase 1/3 scope. Standalone /apply route loads with header+footer+identical form. All specified data-testid hrefs correct (/terms, /privacy, /partners not mailto). domain_sector has exact 'Finance / VC' option; delegate_status default is blank 'Select one' with no pre-selection; phone input has placeholder '+91' with empty value. Expected 404s (/privacy /terms /refunds /cookies /partners /thank-you /waitlist) all correctly return 404 (Phase 2 scope, not bugs). Compliance scan for HPAIR/Hanoi/young/youth returned zero matches - PASS. Only note: mobile header .hcta buttons wrap awkwardly at 390px since only .hnav (not .hcta) is hidden by the 1080px media query - purely cosmetic, does not block any interaction. Nothing else found to retest."
+}

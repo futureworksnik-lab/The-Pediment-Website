@@ -1,0 +1,12 @@
+{
+  "name": "the-pediment-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "serve public -l tcp://0.0.0.0:3000",
+    "build": "echo 'static site — nothing to build'"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
