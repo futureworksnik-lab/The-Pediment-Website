@@ -12,6 +12,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 import os
 from pathlib import Path
+from typing import Dict
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -25,7 +26,7 @@ api_router = APIRouter(prefix="/api")
 
 
 @api_router.get("/")
-async def root():
+async def root() -> Dict[str, str]:
     return {"status": "ok", "service": "the-pediment-static-shim"}
 
 
