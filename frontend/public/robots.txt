@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /thank-you
+Disallow: /waitlist
+
+Sitemap: https://thepediment.com/sitemap.xml
