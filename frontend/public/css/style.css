@@ -131,7 +131,7 @@ body{margin:0;background:var(--ink);color:var(--inkT);font-family:'Hanken Grotes
 .ev-final .evtitle{font-size:clamp(36px,3.4vw,50px)}
 .ev-final .evbody{max-width:64ch}
 .evdisc{opacity:.85}
-.evimg{position:relative;height:340px;background-image:url('../assets/travertine-curve.png');background-size:340% auto;background-position:70% 38%;background-repeat:no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent);mask-image:linear-gradient(180deg,#000 80%,transparent)}
+.evimg{position:relative;height:340px;background-image:url('../assets/travertine-curve.webp');background-size:340% auto;background-position:70% 38%;background-repeat:no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent);mask-image:linear-gradient(180deg,#000 80%,transparent)}
 .evrv{opacity:0;transform:translateY(20px);transition:opacity .3s cubic-bezier(.2,.8,.2,1),transform .3s cubic-bezier(.2,.8,.2,1)}
 .evrv.on{opacity:1;transform:none}
 .nomo .evrv{opacity:1!important;transform:none!important}
